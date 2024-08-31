@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
-import { useRouter, Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
+import { useAuth } from '../../hooks/useAuth';
 import AuthForm from '../../components/AuthForm';
 import LocationInfo from '../../components/LocationInfo';
-import { useAuth } from '../../hooks/useAuth';
 
 export default function Login() {
   const router = useRouter();
@@ -25,8 +25,6 @@ export default function Login() {
       <Text className="text-2xl font-bold mb-6 text-pizza-red font-pizza">Pizza App Login</Text>
       <AuthForm onSubmit={handleLogin} isLogin />
       <LocationInfo />
-      
-      {/* Ajout du lien vers la page d'inscription */}
       <View className="mt-4">
         <Text className="text-pizza-red font-pizza">Pas encore de compte ?</Text>
         <Link href="/register" asChild>

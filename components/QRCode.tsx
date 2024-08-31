@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Animated } from 'react-native';
+import { View, Text } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 
 type QRCodeProps = {
@@ -7,28 +7,22 @@ type QRCodeProps = {
 };
 
 export default function QRCodeComponent({ value }: QRCodeProps) {
-  const [animation] = React.useState(new Animated.Value(0));
-
-  React.useEffect(() => {
-    Animated.spring(animation, {
-      toValue: 1,
-      friction: 3,
-      tension: 40,
-      useNativeDriver: true,
-    }).start();
-  }, []);
+  if (!value) {
+    return (
+      <View className="items-center justify-center my-4">
+        <Text className="text-pizza-red font-pizza">QR Code non disponible</Text>
+      </View>
+    );
+  }
 
   return (
-    <Animated.View 
-      className="items-center justify-center my-4"
-      style={{ transform: [{ scale: animation }] }}
-    >
+    <View className="items-center justify-center my-4">
       <QRCode
         value={value}
         size={200}
         color="#FF0000"
         backgroundColor="#FFFFFF"
       />
-    </Animated.View>
+    </View>
   );
 }

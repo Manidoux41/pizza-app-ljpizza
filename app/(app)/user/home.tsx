@@ -10,9 +10,11 @@ export default function UserHome() {
 
   return (
     <ScrollView className="flex-1 bg-pizza-white p-4">
-      <Text className="text-2xl font-bold mb-4 text-pizza-red font-pizza">Bonjour, {user?.first_name}</Text>
+      <Text className="text-2xl font-bold mb-4 text-pizza-red font-pizza">
+        Bonjour, {user?.first_name || 'Pizzaïolo'}
+      </Text>
       <PizzaCounter />
-      <QRCode value={user?.id || ''} />
+      {user?.id && <QRCode value={user.id} />}
       <LegalMentions />
     </ScrollView>
   );
