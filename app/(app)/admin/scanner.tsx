@@ -4,20 +4,22 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import { useRouter } from 'expo-router';
 
 export default function AdminScanner() {
-  const [hasPermission, setHasPermission] = useState(null);
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    (async () => {
+    const getBarCodeScannerPermissions = async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
       setHasPermission(status === 'granted');
-    })();
+    };
+
+    getBarCodeScannerPermissions();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = ({ data }: { data: string }) => {
     setScanned(true);
-    router.push(`/admin/user-profile?id=${data}`);
+    router.push(`/admin/user-profile/${data}`);
   };
 
   if (hasPermission === null) {
@@ -28,7 +30,7 @@ export default function AdminScanner() {
   }
 
   return (
-    <View className="flex-1 justify-center items-center">
+    <View style={styles.container}>
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
@@ -37,3 +39,11 @@ export default function AdminScanner() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+});

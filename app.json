@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "pizza-app",
+    "name": "PizzaApp",
     "slug": "pizza-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -15,18 +15,28 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yourcompany.pizzaapp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.yourcompany.pizzaapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "plugins": [
+      "expo-notifications",
+      "expo-secure-store"
+    ],
     "scheme": "pizzaapp",
-    "entryPoint": "./App.tsx"
+    "extra": {
+      "eas": {
+        "projectId": "your-project-id-here"
+      }
+    }
   }
 }

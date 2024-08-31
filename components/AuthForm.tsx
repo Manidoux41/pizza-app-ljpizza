@@ -1,30 +1,24 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, Animated } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text } from 'react-native';
 
 type AuthFormProps = {
-  onSubmit: (email: string, password: string) => void;
+  onSubmit: (email: string, password: string, firstName: string, lastName: string, location: string) => void;
   isLogin: boolean;
 };
 
 export default function AuthForm({ onSubmit, isLogin }: AuthFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [animation] = useState(new Animated.Value(0));
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [location, setLocation] = useState('');
 
-  React.useEffect(() => {
-    Animated.spring(animation, {
-      toValue: 1,
-      useNativeDriver: true,
-    }).start();
-  }, []);
+  const handleSubmit = () => {
+    onSubmit(email, password, firstName, lastName, location);
+  };
 
   return (
-    <Animated.View 
-      className="w-full px-4"
-      style={{
-        transform: [{ scale: animation }],
-      }}
-    >
+    <View className="w-full px-4">
       <TextInput
         className="border-2 border-pizza-yellow rounded-md p-3 mb-4 bg-pizza-white text-pizza-red font-pizza"
         placeholder="Email"
@@ -40,14 +34,36 @@ export default function AuthForm({ onSubmit, isLogin }: AuthFormProps) {
         onChangeText={setPassword}
         secureTextEntry
       />
+      {!isLogin && (
+        <>
+          <TextInput
+            className="border-2 border-pizza-yellow rounded-md p-3 mb-4 bg-pizza-white text-pizza-red font-pizza"
+            placeholder="First Name"
+            value={firstName}
+            onChangeText={setFirstName}
+          />
+          <TextInput
+            className="border-2 border-pizza-yellow rounded-md p-3 mb-4 bg-pizza-white text-pizza-red font-pizza"
+            placeholder="Last Name"
+            value={lastName}
+            onChangeText={setLastName}
+          />
+          <TextInput
+            className="border-2 border-pizza-yellow rounded-md p-3 mb-4 bg-pizza-white text-pizza-red font-pizza"
+            placeholder="Location"
+            value={location}
+            onChangeText={setLocation}
+          />
+        </>
+      )}
       <TouchableOpacity
         className="bg-pizza-red rounded-md p-3"
-        onPress={() => onSubmit(email, password)}
+        onPress={handleSubmit}
       >
         <Text className="text-pizza-white text-center font-bold font-pizza">
           {isLogin ? "Login" : "Register"}
         </Text>
       </TouchableOpacity>
-    </Animated.View>
+    </View>
   );
 }

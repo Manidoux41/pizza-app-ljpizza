@@ -1,10 +1,21 @@
 import React from 'react';
-import { Tabs } from 'expo-router';
+import { Tabs, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../hooks/useAuth';
 
 export default function AppLayout() {
-  const { user } = useAuth();
+  const { profile, loading } = useAuth();
+  const router = useRouter();
+
+  React.useEffect(() => {
+    if (!loading && !profile) {
+      router.replace('/');
+    }
+  }, [loading, profile]);
+
+  if (loading || !profile) {
+    return null; // Or a loading indicator
+  }
 
   return (
     <Tabs
@@ -24,30 +35,21 @@ export default function AppLayout() {
       }}
     >
       <Tabs.Screen
-        name="user/home"
+        name="profile"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="user/profile"
-        options={{
-          title: 'Profile',
+          title: 'Profil',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person" size={size} color={color} />
           ),
         }}
       />
-      {user?.is_admin && (
+      {profile.is_admin && (
         <Tabs.Screen
-          name="admin/scanner"
+          name="admin"
           options={{
-            title: 'Scanner',
+            title: 'Admin',
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="qr-code" size={size} color={color} />
+              <Ionicons name="settings" size={size} color={color} />
             ),
           }}
         />
